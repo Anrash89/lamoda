@@ -55,7 +55,7 @@ function generateExcel() {
 
 /* 
 =====================================================
---- ОБНОВЛЕННАЯ ФУНКЦИЯ ПЕЧАТИ ЭТИКЕТОК (СО ШТРИХКОДОМ) ---
+--- ОБНОВЛЕННАЯ ФУНКЦИЯ ПЕЧАТИ ЭТИКЕТОК ---
 =====================================================
 */
 function printLabels() {
@@ -63,16 +63,14 @@ function printLabels() {
     const printArea = document.getElementById('print-area');
     printArea.innerHTML = '';
 
-    // ШАГ 1: Создаем HTML-структуру для всех этикеток
+    // ШАГ 1: Создаем HTML-структуру
     productList.forEach(product => {
         let iconsHtml = product.icons.map(iconFile => `<img src="icons/${iconFile}" class="care-icon">`).join('');
         const labelHtml = `
             <div class="print-label-container">
-                <!-- Место для ШК -->
                 <div class="label-barcode-area">
                     <svg id="label-barcode-${product.id}"></svg>
                 </div>
-                <!-- Основной контент -->
                 <div class="lamoda-label">
                     <div class="text-content">
                         <p><strong>${product.name}</strong></p>
@@ -91,11 +89,15 @@ function printLabels() {
         printArea.innerHTML += labelHtml;
     });
 
-    // ШАГ 2: Теперь, когда SVG-элементы созданы, генерируем в них штрихкоды
+    // ШАГ 2: Генерируем штрихкоды
     productList.forEach(product => {
         if (product.barcode) {
             JsBarcode(`#label-barcode-${product.id}`, product.barcode, {
-                format: "CODE128", width: 1.5, height: 30, displayValue: false // Без текста под ШК
+                format: "CODE128",
+                width: 1.5,
+                height: 30,
+                // --- ИЗМЕНЕНИЕ ЗДЕСЬ ---
+                displayValue: true // Включаем отображение цифр
             });
         }
     });
@@ -105,7 +107,7 @@ function printLabels() {
 
 /* 
 =====================================================
---- ФУНКЦИЯ ПЕЧАТИ ОТДЕЛЬНЫХ ШТРИХКОДОВ (РАБОТАЕТ) ---
+--- ФУНКЦИЯ ПЕЧАТИ ОТДЕЛЬНЫХ ШТРИХКОДОВ ---
 =====================================================
 */
 function printBarcodes() {
