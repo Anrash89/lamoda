@@ -27,58 +27,61 @@ th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; font-siz
 th { background-color: #f2f2f2; }
 .delete-btn { color: #dc3545; cursor: pointer; font-weight: bold; }
 
+
+/* Скрытая область для печати */
+#print-area { display: none; }
+
 /* 
 =====================================================
---- НОВЫЕ СТИЛИ ДЛЯ ЭТИКЕТКИ LAMODA ---
+--- СТИЛИ ДЛЯ ПЕЧАТИ ---
 =====================================================
 */
-.lamoda-label {
-    display: flex; /* Главный контейнер этикетки */
-    justify-content: space-between;
-    font-size: 10pt;
-    line-height: 1.4;
-}
-.lamoda-label .text-content {
-    flex-basis: 70%; /* Текстовая часть занимает 70% ширины */
-}
-.lamoda-label .icons-content {
-    flex-basis: 25%; /* Иконки занимают 25% */
-    display: flex;
-    flex-wrap: wrap; /* Позволяет иконкам переноситься */
-    align-content: flex-start;
-    gap: 5px;
-}
-.lamoda-label .text-content p {
-    margin: 0 0 4px 0;
-}
-.lamoda-label .text-content strong {
-    font-weight: bold;
-}
-.lamoda-label .care-icon {
-    width: 25px; /* Размер значков ухода */
-    height: auto;
-}
-/* Конец новых стилей */
-
-/* Стили для печати */
-#print-area { display: none; }
 @media print {
+    /* Скрываем все, кроме области для печати */
     body > *:not(#print-area) { display: none; }
     #print-area { display: block; }
     
-    .print-label-container { /* Контейнер для ОДНОЙ этикетки на печать */
-        width: 80mm;   /* Ширина этикетки */
-        height: 55mm;  /* Высота этикетки */
+    /* Контейнер для ОДНОЙ этикетки */
+    .print-label-container {
+        width: 80mm;
+        height: 55mm;
         padding: 4mm;
         box-sizing: border-box;
         page-break-inside: avoid;
         page-break-after: always;
-        border: 1px solid #ccc; /* Убрать (закомментировать), если рамка не нужна */
+        border: 1px solid #000; /* Черная рамка как на фото */
         overflow: hidden;
+    }
+
+    /* Стили самого макета этикетки, ПЕРЕМЕЩЕНЫ СЮДА */
+    .lamoda-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 8pt; /* Уменьшим шрифт для лучшего вхождения */
+        line-height: 1.3;
+        font-family: sans-serif; /* Простой шрифт для печати */
+    }
+    .lamoda-label .text-content {
+        flex-basis: 70%;
+    }
+    .lamoda-label .icons-content {
+        flex-basis: 28%; /* Немного увеличим место для иконок */
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        gap: 4px;
+        padding-left: 5px; /* Небольшой отступ слева */
+    }
+    .lamoda-label .text-content p {
+        margin: 0 0 3px 0;
+    }
+    .lamoda-label .care-icon {
+        width: 18px; /* Оптимальный размер значков */
+        height: auto;
     }
 }
 
-/* Адаптивность */
+/* Адаптивность для экрана */
 @media (max-width: 900px) {
     .content-wrapper { flex-direction: column; }
     .form-grid { grid-template-columns: 1fr; }
