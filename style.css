@@ -27,19 +27,54 @@ th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; font-siz
 th { background-color: #f2f2f2; }
 .delete-btn { color: #dc3545; cursor: pointer; font-weight: bold; }
 
+/* 
+=====================================================
+--- НОВЫЕ СТИЛИ ДЛЯ ЭТИКЕТКИ LAMODA ---
+=====================================================
+*/
+.lamoda-label {
+    display: flex; /* Главный контейнер этикетки */
+    justify-content: space-between;
+    font-size: 10pt;
+    line-height: 1.4;
+}
+.lamoda-label .text-content {
+    flex-basis: 70%; /* Текстовая часть занимает 70% ширины */
+}
+.lamoda-label .icons-content {
+    flex-basis: 25%; /* Иконки занимают 25% */
+    display: flex;
+    flex-wrap: wrap; /* Позволяет иконкам переноситься */
+    align-content: flex-start;
+    gap: 5px;
+}
+.lamoda-label .text-content p {
+    margin: 0 0 4px 0;
+}
+.lamoda-label .text-content strong {
+    font-weight: bold;
+}
+.lamoda-label .care-icon {
+    width: 25px; /* Размер значков ухода */
+    height: auto;
+}
+/* Конец новых стилей */
+
 /* Стили для печати */
 #print-area { display: none; }
 @media print {
     body > *:not(#print-area) { display: none; }
     #print-area { display: block; }
-    .label-container, .barcode-container {
-        width: 100mm; /* Задайте нужную ширину */
-        padding: 5mm;
+    
+    .print-label-container { /* Контейнер для ОДНОЙ этикетки на печать */
+        width: 80mm;   /* Ширина этикетки */
+        height: 55mm;  /* Высота этикетки */
+        padding: 4mm;
         box-sizing: border-box;
         page-break-inside: avoid;
         page-break-after: always;
-        border: 1px solid #ccc; /* Убрать для реальной печати */
-        margin-bottom: 10px; /* Убрать для реальной печати */
+        border: 1px solid #ccc; /* Убрать (закомментировать), если рамка не нужна */
+        overflow: hidden;
     }
 }
 
