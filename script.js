@@ -1,3 +1,8 @@
+// Подключаем библиотеку для штрихкодов вверху
+const script = document.createElement('script');
+script.src = 'https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js';
+document.head.appendChild(script);
+
 let productList = []; // Массив для хранения всех товаров
 
 function addProduct() {
@@ -25,12 +30,7 @@ function renderProductList() {
     tableBody.innerHTML = ''; 
     productList.forEach(product => {
         const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${product.name}</td>
-            <td>${product.sku}</td>
-            <td>${product.size}</td>
-            <td><span class="delete-btn" onclick="deleteProduct(${product.id})">X</span></td>
-        `;
+        row.innerHTML = `<td>${product.name}</td><td>${product.sku}</td><td>${product.size}</td><td><span class="delete-btn" onclick="deleteProduct(${product.id})">X</span></td>`;
         tableBody.appendChild(row);
     });
     document.getElementById('product-count').innerText = productList.length;
@@ -55,29 +55,24 @@ function generateExcel() {
 
 /* 
 =====================================================
---- НОВАЯ ФУНКЦИЯ ПЕЧАТИ ЭТИКЕТОК ---
+--- ОБНОВЛЕННАЯ ФУНКЦИЯ ПЕЧАТИ ЭТИКЕТОК (СО ШТРИХКОДОМ) ---
 =====================================================
 */
 function printLabels() {
-    if (productList.length === 0) {
-        alert("Список товаров пуст!");
-        return;
-    }
-
+    if (productList.length === 0) { alert("Список товаров пуст!"); return; }
     const printArea = document.getElementById('print-area');
-    printArea.innerHTML = ''; // Очищаем область печати
+    printArea.innerHTML = '';
 
-    // Проходим по каждому товару в списке
+    // ШАГ 1: Создаем HTML-структуру для всех этикеток
     productList.forEach(product => {
-        // --- Создаем HTML для иконок ---
-        let iconsHtml = '';
-        product.icons.forEach(iconFile => {
-            iconsHtml += `<img src="icons/${iconFile}" class="care-icon">`;
-        });
-
-        // --- Создаем полный HTML для одной этикетки ---
+        let iconsHtml = product.icons.map(iconFile => `<img src="icons/${iconFile}" class="care-icon">`).join('');
         const labelHtml = `
             <div class="print-label-container">
+                <!-- Место для ШК -->
+                <div class="label-barcode-area">
+                    <svg id="label-barcode-${product.id}"></svg>
+                </div>
+                <!-- Основной контент -->
                 <div class="lamoda-label">
                     <div class="text-content">
                         <p><strong>${product.name}</strong></p>
@@ -90,23 +85,50 @@ function printLabels() {
                         <p>${product.address}</p>
                         <p>Дата производства: ${product.prodDate}</p>
                     </div>
-                    <div class="icons-content">
-                        ${iconsHtml}
-                    </div>
+                    <div class="icons-content">${iconsHtml}</div>
                 </div>
-            </div>
-        `;
-        
-        // Добавляем готовую этикетку в область печати
+            </div>`;
         printArea.innerHTML += labelHtml;
     });
 
-    // Отправляем на печать
+    // ШАГ 2: Теперь, когда SVG-элементы созданы, генерируем в них штрихкоды
+    productList.forEach(product => {
+        if (product.barcode) {
+            JsBarcode(`#label-barcode-${product.id}`, product.barcode, {
+                format: "CODE128", width: 1.5, height: 30, displayValue: false // Без текста под ШК
+            });
+        }
+    });
+
     window.print();
 }
-// --- КОНЕЦ НОВОЙ ФУНКЦИИ ---
 
+/* 
+=====================================================
+--- ФУНКЦИЯ ПЕЧАТИ ОТДЕЛЬНЫХ ШТРИХКОДОВ (РАБОТАЕТ) ---
+=====================================================
+*/
 function printBarcodes() {
-    alert("Функция печати штрихкодов в разработке!");
-    // Здесь будет код для генерации простых штрихкодов
+    if (productList.length === 0) { alert("Список товаров пуст!"); return; }
+    const printArea = document.getElementById('print-area');
+    printArea.innerHTML = '';
+
+    productList.forEach(product => {
+        const barcodeHtml = `
+            <div class="print-barcode-container">
+                <svg id="barcode-${product.id}"></svg>
+                <p class="manufacturer-name">${product.manufacturer}</p>
+            </div>`;
+        printArea.innerHTML += barcodeHtml;
+    });
+
+    productList.forEach(product => {
+        if (product.barcode) {
+            JsBarcode(`#barcode-${product.id}`, product.barcode, {
+                format: "CODE128", width: 2, height: 50, displayValue: true
+            });
+        }
+    });
+    
+    window.print();
 }

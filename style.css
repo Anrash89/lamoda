@@ -4,29 +4,20 @@ h1, h2 { color: #333; }
 .content-wrapper { display: flex; gap: 30px; }
 .form-column { flex: 1; }
 .list-column { flex: 1; }
-
-/* Стили формы */
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
 label { display: block; font-weight: 500; margin-bottom: 5px; font-size: 14px; }
 input[type="text"], textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
 textarea { resize: vertical; }
-
-/* Стили значков */
 .icons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-bottom: 20px; }
 .icons-grid div { display: flex; align-items: center; gap: 5px; }
-
-/* Кнопки */
 button { background-color: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.2s; }
 button:hover { background-color: #0056b3; }
 .actions { display: flex; gap: 10px; margin-bottom: 20px; }
-
-/* Таблица со списком */
 .product-list-container { max-height: 500px; overflow-y: auto; }
 table { width: 100%; border-collapse: collapse; }
 th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; font-size: 14px; }
 th { background-color: #f2f2f2; }
 .delete-btn { color: #dc3545; cursor: pointer; font-weight: bold; }
-
 
 /* Скрытая область для печати */
 #print-area { display: none; }
@@ -37,48 +28,49 @@ th { background-color: #f2f2f2; }
 =====================================================
 */
 @media print {
-    /* Скрываем все, кроме области для печати */
     body > *:not(#print-area) { display: none; }
     #print-area { display: block; }
     
-    /* Контейнер для ОДНОЙ этикетки */
+    /* Контейнер для ПОДРОБНОЙ этикетки */
     .print-label-container {
         width: 80mm;
-        height: 55mm;
+        min-height: 55mm;
         padding: 4mm;
         box-sizing: border-box;
         page-break-inside: avoid;
         page-break-after: always;
-        border: 1px solid #000; /* Черная рамка как на фото */
+        border: 1px solid #000;
         overflow: hidden;
     }
 
-    /* Стили самого макета этикетки, ПЕРЕМЕЩЕНЫ СЮДА */
-    .lamoda-label {
+    /* НОВЫЙ БЛОК для ШК на подробной этикетке */
+    .label-barcode-area {
+        text-align: center;
+        margin-bottom: 5px;
+    }
+
+    .lamoda-label { display: flex; justify-content: space-between; font-size: 8pt; line-height: 1.3; font-family: sans-serif; }
+    .lamoda-label .text-content { flex-basis: 70%; }
+    .lamoda-label .icons-content { flex-basis: 28%; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 4px; padding-left: 5px; }
+    .lamoda-label .text-content p { margin: 0 0 3px 0; }
+    .lamoda-label .care-icon { width: 18px; height: auto; }
+
+    /* СТИЛИ для этикетки со ШТРИХКОДОМ */
+    .print-barcode-container {
+        width: 80mm;
+        height: 40mm;
+        padding: 4mm;
+        box-sizing: border-box;
+        page-break-inside: avoid;
+        page-break-after: always;
+        border: 1px solid #000;
         display: flex;
+        flex-direction: column;
+        align-items: center;
         justify-content: space-between;
-        font-size: 8pt; /* Уменьшим шрифт для лучшего вхождения */
-        line-height: 1.3;
-        font-family: sans-serif; /* Простой шрифт для печати */
     }
-    .lamoda-label .text-content {
-        flex-basis: 70%;
-    }
-    .lamoda-label .icons-content {
-        flex-basis: 28%; /* Немного увеличим место для иконок */
-        display: flex;
-        flex-wrap: wrap;
-        align-content: flex-start;
-        gap: 4px;
-        padding-left: 5px; /* Небольшой отступ слева */
-    }
-    .lamoda-label .text-content p {
-        margin: 0 0 3px 0;
-    }
-    .lamoda-label .care-icon {
-        width: 18px; /* Оптимальный размер значков */
-        height: auto;
-    }
+    .print-barcode-container .barcode-svg { width: 100%; height: 20mm; }
+    .print-barcode-container .manufacturer-name { font-size: 10pt; font-family: sans-serif; margin: 0; text-align: center; }
 }
 
 /* Адаптивность для экрана */

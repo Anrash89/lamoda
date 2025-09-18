@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Помощник для Lamoda</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Библиотека для создания Excel файлов -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -33,11 +31,9 @@
 
                 <h3>Значки ухода и сертификации</h3>
                 <div class="icons-grid" id="icons-selection">
-                    <!-- ИЗМЕНЕНИЯ ЗДЕСЬ: .svg заменено на .png -->
                     <div><input type="checkbox" id="icon-wash30" value="wash-30.png" checked><label>Стирка 30°</label></div>
                     <div><input type="checkbox" id="icon-no-bleach" value="no-bleach.png" checked><label>Не отбеливать</label></div>
                     <div><input type="checkbox" id="icon-eac" value="eac.png" checked><label>EAC</label></div>
-                    <!-- Добавьте другие значки по аналогии, убедившись, что value="имя_файла.png" -->
                 </div>
 
                 <button type="button" onclick="addProduct()">Добавить товар в список</button>
@@ -73,6 +69,9 @@
     <!-- Скрытая область для генерации этикеток для печати -->
     <div id="print-area"></div>
 
+    <!-- Библиотека для Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- Библиотека для штрихкодов будет добавлена в script.js -->
     <script src="script.js"></script>
 </body>
 </html>
