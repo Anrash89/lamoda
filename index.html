@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Помощник для Lamoda</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Библиотека для создания Excel файлов -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+    <div class="main-container">
+        <h1>Помощник для Lamoda</h1>
+
+        <div class="content-wrapper">
+            <!-- КОЛОНКА С ФОРМОЙ ВВОДА -->
+            <div class="form-column">
+                <h2>Карточка товара</h2>
+                <div class="form-grid">
+                    <div><label for="productName">Наименование:</label><input type="text" id="productName" value="Пальто Stella"></div>
+                    <div><label for="sku">Артикул:</label><input type="text" id="sku" value="AW21-22-VOC-7045-32"></div>
+                    <div><label for="color">Цвет:</label><input type="text" id="color" value="Кэмэл"></div>
+                    <div><label for="size">Размер:</label><input type="text" id="size" value="XS"></div>
+                    <div><label for="country">Страна:</label><input type="text" id="country" value="Россия"></div>
+                    <div><label for="brand">Бренд:</label><input type="text" id="brand" value="EQ.ONA MODE"></div>
+                </div>
+                <div><label for="composition">Состав:</label><textarea id="composition" rows="3">Материал Верха: 10% кашемир 50% шерсть 34% вискоза 6% шелк</textarea></div>
+                <div><label for="manufacturer">Производитель:</label><input type="text" id="manufacturer" value="ИП Шапочкина Александра Вадимовна"></div>
+                <div><label for="address">Адрес производителя:</label><input type="text" id="address" value="125284, РОССИЯ, Г Москва, ул. Ленина, дом 12 корпус 1"></div>
+                <div><label for="prodDate">Дата производства:</label><input type="text" id="prodDate" value="11.08.2025"></div>
+                <div><label for="barcode">Штрихкод (Code128):</label><input type="text" id="barcode" value="2000000007953"></div>
+
+                <h3>Значки ухода и сертификации</h3>
+                <div class="icons-grid" id="icons-selection">
+                    <!-- ИЗМЕНЕНИЯ ЗДЕСЬ: .svg заменено на .png -->
+                    <div><input type="checkbox" id="icon-wash30" value="wash-30.png" checked><label>Стирка 30°</label></div>
+                    <div><input type="checkbox" id="icon-no-bleach" value="no-bleach.png" checked><label>Не отбеливать</label></div>
+                    <div><input type="checkbox" id="icon-eac" value="eac.png" checked><label>EAC</label></div>
+                    <!-- Добавьте другие значки по аналогии, убедившись, что value="имя_файла.png" -->
+                </div>
+
+                <button type="button" onclick="addProduct()">Добавить товар в список</button>
+            </div>
+
+            <!-- КОЛОНКА СО СПИСКОМ ТОВАРОВ И КНОПКАМИ -->
+            <div class="list-column">
+                <h2>Список товаров (<span id="product-count">0</span>)</h2>
+                <div class="actions">
+                    <button onclick="generateExcel()">Скачать Excel</button>
+                    <button onclick="printLabels()">Печать этикеток</button>
+                    <button onclick="printBarcodes()">Печать штрихкодов</button>
+                </div>
+                <div class="product-list-container">
+                    <table id="product-table">
+                        <thead>
+                            <tr>
+                                <th>Наименование</th>
+                                <th>Артикул</th>
+                                <th>Размер</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Сюда будут добавляться товары -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Скрытая область для генерации этикеток для печати -->
+    <div id="print-area"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
